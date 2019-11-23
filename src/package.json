@@ -4,9 +4,22 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "",
-  "license": "MIT"
+  "author": "Marco Aliste",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chalk": "^3.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "mysql": "^2.17.1",
+    "passport": "^0.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0",
+    "standard": "^14.3.1"
+  }
 }
