@@ -33,7 +33,7 @@ class IngresoProducto extends Component{
     render(){
         return(
             <div>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <div className="form-row">
                         <div className="col-12">
                             <h1 className="text-center">Ingreso Producto</h1>
@@ -99,7 +99,8 @@ class IngresoProducto extends Component{
                         </div>
                         <div className="form-group col-md-4">
                             <label>Tipo</label>
-                            <input type="text" className="form-control" placeholder="Tipo" value={this.state.tipo} onChange={this.handleChange}/>
+                            <input type="text" className="form-control" placeholder="Tipo" value={this.state.tipo} onChange={this.handleChange
+                            }/>
                         </div>
                         <div className="form-group col-md-12 text-center">
                             <button className="btn btn-lg btn-primary">Ingresar</button>
