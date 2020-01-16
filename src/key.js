@@ -1,9 +1,9 @@
 module.exports = {
    /* database: {
         host: 'localhost',
-        user:'kmeylemo_kmeyle',
+        user:'amortigu_amoriguadoresgyf',
         password: 'P71v4t3.$$',
-        database:'kmeylemo_kmeyle'
+        database:'amortigu_amoriguadoresgyf'
     }*/
     /* database: {
         host: 'localhost',

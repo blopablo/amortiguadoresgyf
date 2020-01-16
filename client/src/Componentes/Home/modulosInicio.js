@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Tabs,Tab} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 import IngresoProducto from './ingresoProducto';
 import Ventas from './venta';
+import Productos from './Productos';
 class ModulosInicio extends Component {
     constructor(){
         super()
@@ -16,8 +16,8 @@ class ModulosInicio extends Component {
                 <Tab eventKey="ingreso" title="Ingreso">
                     <IngresoProducto />
                 </Tab>
-                <Tab eventKey="contact" title="Contact" disabled>
-                    
+                <Tab eventKey="productos" title="Productos">
+                    <Productos/>
                 </Tab>
             </Tabs>
         )

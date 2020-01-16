@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Select from 'react-select';
 import * as amortiguadoresAction from '../../redux/actions/amortiguadoresAction';
 import {connect} from 'react-redux';
+import { toast } from "react-toastify";
 class IngresoProducto extends Component{
     constructor(props){
         super(props)
@@ -9,6 +10,7 @@ class IngresoProducto extends Component{
 
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange(e,event){
         if(event === undefined){
@@ -25,10 +27,17 @@ class IngresoProducto extends Component{
             }
         }
     }
+    handleSubmit(e){
+        e.preventDefault();
+        this.props.guardarProducto(this.state);
+        var mensaje = this.props.amortiguadoresReducers.mensaje_producto;
+        toast.success('producto Ingresado') 
+    }
     componentDidMount(){
         this.props.traerMarca();
         this.props.traerPosicion();
         this.props.traerAnio();
+        this.props.traerProveedor();
     }
     render(){
         return(
@@ -45,13 +54,12 @@ class IngresoProducto extends Component{
                         </div>
                         <div className="form-group col-md-4">
                             <label>sku</label>
-                            <input type="text" className="form-control" placeholder="Sku"/>
+                            <input type="text" className="form-control" placeholder="Sku" name="sku" value={this.state.sku} onChange={this.handleChange}/>
                         </div>
                         <div className="form-group col-md-4">
                             <label>Precio Unidad</label>
-                            <input type="text" className="form-control" placeholder="Precio unidad"/>
+                            <input type="text" className="form-control" placeholder="Precio unidad" name="precio_unidad" value={this.state.precio_unidad} onChange={this.handleChange}/>
                         </div>
-
                         <div className="form-group col-md-4">
                             <label>Marca</label>
                             <Select 
@@ -98,16 +106,30 @@ class IngresoProducto extends Component{
                             />
                         </div>
                         <div className="form-group col-md-4">
+                            <label>Proveedor</label>
+                            <Select 
+                                name="proveedor"
+                                value={this.state.proveedor}
+                                onChange={this.handleChange}
+                                options={this.props.amortiguadoresReducers.proveedor}
+                            />
+                        </div>
+                        <div className="form-group col-md-4">
                             <label>Tipo</label>
-                            <input type="text" className="form-control" placeholder="Tipo" value={this.state.tipo} onChange={this.handleChange
-                            }/>
+                            <input type="text" className="form-control" placeholder="Tipo" name="tipo" value={this.state.tipo} onChange={this.handleChange}/>
                         </div>
-                        <div className="form-group col-md-12 text-center">
+                        <div className="form-group col-md-4">
+                            <label>Stock</label>
+                            <input type="text" className="form-control" placeholder="Stock" name="stock" value={this.state.stock} onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-group col-md-4 text-center p-4">
                             <button className="btn btn-lg btn-primary">Ingresar</button>
-                            <hr></hr>
+                          
                         </div>
+                        <div className="col-12"><hr></hr></div>
                     </div>
                 </form>
+                
             </div>
         )
     }

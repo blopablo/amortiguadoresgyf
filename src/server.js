@@ -6,6 +6,8 @@ const chalk = require('chalk')
 const express = require('express')
 const morgan = require('morgan')
 const amortiguadores = require('./rutas/amortiguadores')
+const ingresoMasivo = require('./rutas/ingresoMasivo')
+const users = require('./rutas/User')
 var cors = require('cors')
 const passport = require('passport')
 //initialization
@@ -27,8 +29,9 @@ app.use(passport.session())
 //Global Variales
 
 //Routes
-
+app.use('/ingresoMasivo',ingresoMasivo)
 app.use('/amortiguadores',amortiguadores)
+app.use('/users',users)
 // Express error handler
 app.use((err,req,res,next)=>{
     debug(`Error: ${err.message}`)
