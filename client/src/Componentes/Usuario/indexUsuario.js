@@ -8,17 +8,19 @@ class indexUsuarios extends Component{
     }
     render(){
         return(
-            <Tabs defaultActiveKey="registrar"  id="noanim-tab-example">
-            <Tab eventKey="registrar" title="Registrar">
-                <Registro/>
-            </Tab>
-            <Tab eventKey="ingreso" title="Ventas Usuarios">
-                
-            </Tab>
-            <Tab eventKey="productos" title="Productos">
-                
-            </Tab>
-            </Tabs>
+            <div className="x_content bg-light">
+                <Tabs defaultActiveKey="registrar"  id="noanim-tab-example" className="nav nav-tabs justify-content-end bar_tabs">
+                    <Tab eventKey="registrar" title="Registrar" tabClassName="bg-light">
+                        <Registro/>
+                    </Tab>
+                    <Tab eventKey="ingreso" title="Ventas Usuarios" tabClassName="bg-light">
+                        
+                    </Tab>
+                    <Tab eventKey="productos" title="Productos" tabClassName="bg-light">
+                        
+                    </Tab>
+                </Tabs>
+            </div>
         )
     }
 }

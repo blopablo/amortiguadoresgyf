@@ -2,8 +2,7 @@ import axios from 'axios';
 import jwt_decoded from 'jwt-decode';
 import {USUARIO,TOKEN,ERROR, CARGANDO, ELIMINAR_USUARIO, REGISTRAR} from "../type/loginType";
 const URL = 'http://localhost:5000/users/';
-
-//const URL = 'https://www.amortiguadoresgyf.cl/api/amortiguadores/';
+//const URL = 'https://www.amortiguadoresgyf.cl/api/users/';
 
 export const login = (datos)=> async (dispatch) =>{
     dispatch({
@@ -28,12 +27,13 @@ export const login = (datos)=> async (dispatch) =>{
             payload: usuario
     
         })
+        
         dispatch({
             type:TOKEN,
             payload: respuesta.data
     
         })
-
+        window.location.reload(false);
     }catch(error){
         dispatch({
             type:ERROR,

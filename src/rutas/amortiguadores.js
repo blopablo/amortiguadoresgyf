@@ -67,11 +67,12 @@ amortiguadores.get('/filtrado/:datos',async(req,res)=>{
     const {datos} = req.params
    
     let corte = datos.split('-')
- 
+  console.log(datos)
     if(corte !== undefined){
         if(corte.length === 1){
             let sql =`select pro.id_producto as id,
-            0 as count,
+            pro.stock as count,
+            pro.precio_unitario as precio,
             pro.stock as stock,
             pos.descripcion as forma,
             pro.precio_unitario as precio_unitario ,
@@ -103,9 +104,9 @@ amortiguadores.get('/filtrado/:datos',async(req,res)=>{
              res.json(producto)
         }else if(corte.length ===2){
             let sql =`select pro.id_producto as id,
-                        0 as count,
+                        pro.stock as count,
                         pro.stock as stock,
-                        pro.stock as stock,
+                        pro.precio_unitario as precio,
                         pos.descripcion as forma,
                         pro.precio_unitario as precio_unitario ,
                         pro.precio_par as precio_par ,
@@ -136,8 +137,9 @@ amortiguadores.get('/filtrado/:datos',async(req,res)=>{
              res.json(producto)
         }else if(corte.length ===3){
             let sql =`select pro.id_producto as id,
-                    0 as count,
+                    pro.stock as count,
                     pro.stock as stock,
+                    pro.precio_unitario as precio,
                     pos.descripcion as forma,
                     pro.precio_unitario as precio_unitario ,
                     pro.precio_par as precio_par ,
@@ -174,8 +176,9 @@ amortiguadores.get('/filtrado/:datos',async(req,res)=>{
             if(corte[3] === '1'){
                 
                 sql = `select pro.id_producto as id,
-                        0 as count,
+                        pro.stock as count,
                         pro.stock as stock,
+                        pro.precio_unitario as precio,
                         pos.descripcion as forma,
                         pro.precio_unitario as precio_unitario ,
                         pro.precio_par as precio_par ,
@@ -206,8 +209,9 @@ amortiguadores.get('/filtrado/:datos',async(req,res)=>{
                                                                ORDER BY pos.id_posicion, prov.id_proveedor`
            } else{
                 sql = `select pro.id_producto as id,
-                        0 as count,
+                        pro.stock as count,
                         pro.stock as stock,
+                        pro.precio_unitario as precio,
                         pos.descripcion as forma,
                         pro.precio_unitario as precio_unitario ,
                         pro.precio_par as precio_par ,
@@ -246,7 +250,8 @@ amortiguadores.post('/ventaAmortiguadores', async (req,res)=>{
    
     try{
         // Ordenar Datos 
-        
+        console.log(req.body.datos)
+        let now= new Date();
         let datos = {
             tipo_pago: req.body.datos.selectedOption,
             total: req.body.datos.total,
@@ -268,14 +273,17 @@ amortiguadores.post('/ventaAmortiguadores', async (req,res)=>{
         }
         
         // insertar orden de compra
-        let sql_inser_orden_compra = `insert into orden_compra(total,tipo_pago,modalidad_pago,id_usuario,cantidad) values(?,?,?,?,?)`
+        console.log('insertar orden de compra')
+        let sql_inser_orden_compra = `insert into orden_compra(total,tipo_pago,modalidad_pago,id_usuario,cantidad,fecha_registro) values(?,?,?,?,?,?)`
         const ins_orden = await pool.query(sql_inser_orden_compra,
             [datos.total,
             datos.modalidad_pago,
             datos.tipo_pago,
             datos.id_usuario,
-            datos.cantidad
+            datos.cantidad,
+            now
         ])
+        console.log('orden de compra lista')
         // Insertar productos a producto_orden
         datos.productos.map(async datos=>{
             let stock = parseInt(datos.stock) - datos.count
@@ -283,12 +291,13 @@ amortiguadores.post('/ventaAmortiguadores', async (req,res)=>{
                         set stock = ${stock}
                         where id_producto = ${datos.id}`
             const stock_pro = await pool.query(sql)  
-            let sql_inser_orden_compra = `insert into producto_orden(id_orden,id_producto)
-                                        values(?,?)`
+            let sql_inser_orden_compra = `insert into producto_orden(id_orden,id_producto,porcentaje)
+                                        values(?,?,?)`
 
         const ins_orden_pro = await pool.query(sql_inser_orden_compra,
             [ins_orden.insertId,
-            datos.id])
+            datos.id,
+            datos.porcentaje])
             
         })
         
@@ -401,6 +410,40 @@ amortiguadores.post('/editarAnio', async(req,res)=>{
     
 
 
+})
+amortiguadores.put('/editar_amortiguadores',async(req,res)=>{
+    const datos = req.body
+    console.log(datos.id)
+    try{
+        let sql_update = `UPDATE producto SET`
+        if(datos.anio_hasta !== undefined && datos.anio_desde !== undefined && datos.anio_desde !== '' && datos.precio_unitario !== undefined){
+            sql_update += ` anio_hasta = ${datos.anio_hasta.id}, anio_desde = ${datos.anio_desde.id}, precio_unitario = ${datos.precio_unitario}, precio_par = ${datos.precio_par}`
+        }else
+        {
+            if(datos.anio_hasta !== undefined && datos.anio_desde !== undefined && datos.anio_desde !== ''){
+                sql_update += ` anio_hasta = ${datos.anio_hasta.id}, anio_desde = ${datos.anio_desde.id}`
+            }else if(datos.anio_desde !== undefined && datos.anio_desde !== ''){
+                sql_update += ` anio_desde = ${datos.anio_desde.id}`
+            }else if(datos.anio_hasta !== undefined && datos.anio_hasta !== ''){
+                sql_update += ` anio_hasta = ${datos.anio_hasta.id}`
+            }
+            
+            if(datos.precio_unitario !== undefined){
+                sql_update += `  precio_unitario = ${datos.precio_unitario}, precio_par = ${datos.precio_par}`
+                
+            }
+        }
+        
+        
+        sql_update +=` where id_producto = ${datos.id}`
+       
+        let update = await pool.query(sql_update)
+        const producto = await traerProductos(datos.state)
+        res.send(producto)
+    }catch(err){
+  console.log(err)
+    }
+   
 })
 module.exports = amortiguadores
 

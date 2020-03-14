@@ -6,7 +6,6 @@ import * as serviceWorker from './serviceWorker';
 import {store, persistor} from './redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 //import 'bootstrap/dist/js/bootstrap.js';
 ReactDOM.render(

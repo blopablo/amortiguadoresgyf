@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { CARGANDO, TRAER_AMORTIGUADOR, ERROR, TRAER_MARCA, TRAER_MODELO, TRAER_POSICION, TRAER_ANIO, GUARDAR_PRODUCTO, TRAER_PROVEEDOR, TRAER_POSICION_CORTA, TRAER_AMORTIGUADORES_VENTA } from "../type/amortiguadoresType";
 import { CARRO, TOTAL_CARRO, CANTIDAD_CART } from '../type/carroType';
+
 const URL = 'http://localhost:5000/amortiguadores/';
 //const URL = 'https://www.amortiguadoresgyf.cl/api/amortiguadores/';
 
@@ -198,7 +199,7 @@ export const ventaAmortiguadores = (datos,carro)=> async (dispatch,getState)=>{
     });
 
     try{
-        datos = {...datos, username:getState().loginReducers.usuario.username}
+        datos = {...datos, username:getState().loginReducers.usuario.username, cantidad:getState().carroReducers.cart.length}
         let datos_todo = {datos,carro};
         const respuesta = await axios.post(URL+'ventaAmortiguadores',datos_todo);
         
@@ -245,6 +246,34 @@ export const editarAnio = (datos,id)=> async (dispatch)=>{
             id_producto:id
         }
         const respuesta = await axios.post(URL+'editarAnio',datos);
+        
+        dispatch({
+            type:TRAER_AMORTIGUADOR,
+            payload: respuesta.data
+    
+        })
+        
+
+    }catch(error){
+        dispatch({
+            type:ERROR,
+            payload:'Algo salio mal intente mas tarde'
+        })
+    }
+}
+
+export const editar_amortiguadores = (datos,id,state)=> async (dispatch)=>{
+    dispatch({
+        type:CARGANDO
+    });
+
+    try{
+        datos={
+            ...datos,
+            id:id,
+            state
+        }
+        const respuesta = await axios.put(URL+'editar_amortiguadores',datos);
         
         dispatch({
             type:TRAER_AMORTIGUADOR,

@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import Spinner from '../lib/Spinner';
 import Select from 'react-select';
 import * as amortiguadoresAction from '../../redux/actions/amortiguadoresAction';
 import * as carroAction from '../../redux/actions/carroActions';
@@ -111,8 +112,7 @@ class Ventas extends Component {
         this.props.agregarItem(this.props.carroReducers.cart);
         toast.error('Producto Eliminado');
     }
-    async addToCart(id,precio){
-        
+    async addToCart(id,precio,porcentaje){
         /*  let tempProducto = [...detalle];
           const index = tempProducto.indexOf(getItem(id));*/
         let producto = this.props.amortiguadoresReducers.amortiguadores_venta.find(item=>item.id === id);
@@ -134,7 +134,9 @@ class Ventas extends Component {
                 })
                 // props.carroReducers.cart.push(producto);
                 this.props.agregarItem(this.props.carroReducers.cart);
+                toast.success('Producto Agregado');
             }
+            
         
     }
     buscarPorCodigo(e){
@@ -211,25 +213,43 @@ class Ventas extends Component {
                             <hr></hr>
                             {this.props.carroReducers.cart.map((datos,key)=>{
                                 return(
-                                    <div className="col-4 pb-2" key={key}>
-                                    <div className="card mb-3" style={{maxWidth: "500px"} } key={key}>
-                                        <div className="row no-gutters">
-                                            <div className="col-md-4">
-                                                <img src={require('../../img/'+datos.img_provedor)} className="card-img" alt="Foto_proveedor"/>
-                                                <button className="btn btn-danger" onClick={(e)=> this.trashBtn(datos.id,e)}>Eliminar</button>
-                                            </div>
-                                            <div className="col-md-8">
-                                            <div className="card-body">
-                                                <h5 className="card-title">Marca: {datos.marca}</h5>
-                                                <p className="card-text">Modelo: {datos.modelo}</p>
-                                                <p className="card-text">{datos.anio_desde}/{datos.anio_hasta}</p>
-                                                <p className="card-text">{datos.forma}</p>
-                                                <p className="card-text">Cantidad: {datos.count}</p>
-                                            </div>
-                                            </div>
+                                    <div class="col-md-4 col-sm-4  profile_details">
+                                    <div class="well profile_view">
+                                      <div class="col-sm-12">
+                                        <div class="left col-md-7 col-sm-7">
+                                          <h2>Nicole Pearson</h2>
+                                          <p><strong>Marca: </strong>{datos.marca}</p>
+                                          <ul class="list-unstyled">
+                                            <li><i class="fa fa-building"></i> Address: </li>
+                                            <li><i class="fa fa-phone"></i> Phone #: </li>
+                                          </ul>
                                         </div>
+                                        <div class="right col-md-5 col-sm-5 text-center">
+                                          <img src={require('../../img/'+datos.img_provedor)} alt="" class="img-circle img-fluid"/>
+                                        </div>
+                                      </div>
+                                      <div class=" profile-bottom text-center">
+                                        <div class=" col-sm-6 emphasis">
+                                          <p class="ratings">
+                                            <a>4.0</a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star-o"></span></a>
+                                          </p>
+                                        </div>
+                                        <div class=" col-sm-6 emphasis">
+                                          <button type="button" class="btn btn-success btn-sm"> <i class="fa fa-user">
+                                            </i> <i class="fa fa-comments-o"></i> </button>
+                                          <button type="button" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-user"> </i> View Profile
+                                          </button>
+                                        </div>
+                                      </div>
                                     </div>
-                                    </div>
+                                  </div>
+                                  
                                      )
                              })}
                             
@@ -256,7 +276,7 @@ class Ventas extends Component {
                                                     <p className="card-text">{datos.anio_desde}/{datos.anio_hasta}</p>
                                                     <p className="card-text">{datos.forma}</p>
                                                     {datos.stock > 0 &&
-                                                    <button className="btn btn-success pl-2" onClick={(e)=> this.addToCart(datos.id,datos.precio_unitario)} >Agregar</button>
+                                                    <button className="btn btn-success pl-2" onClick={(e)=> this.addToCart(datos.id,datos.precio_unitario,`${this.state.porcentaje}${datos.id}`)} >Agregar</button>
                                                     }
                                                     <b className="pl-2">Stock:{datos.stock}</b>
                                                 </div>

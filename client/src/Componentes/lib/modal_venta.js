@@ -52,6 +52,9 @@ componentDidMount() {
           </div>
         </Modal.Body>
         <Modal.Footer>
+        <Button variant="danger" onClick={this.props.dalete_cart}>
+            Borrar
+          </Button>
           <Button variant="secondary" onClick={this.props.hideModal}>
             Cerrar
           </Button>

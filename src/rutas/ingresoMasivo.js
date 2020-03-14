@@ -5,7 +5,7 @@ const api = express.Router()
 const pool = require('../database')
 var xlsx  = require('node-xlsx')
 api.post('/agregarProductos', async(req,res)=>{
-    var obje = xlsx.parse(__dirname+'/teks_1.xlsx');
+    var obje = xlsx.parse(__dirname+'/teks.xlsx');
     /**************Consultas base de datos*******************************************************/
     //PROVEEDOR
     let sql =`select descripcion,id_proveedor from proveedor ORDER BY descripcion`
@@ -35,8 +35,10 @@ api.post('/agregarProductos', async(req,res)=>{
                 }
             })
         })*/
+        let count = 0;
         for(var i = 0; i < datos.data.length; i++){
             let valores = datos.data[i].toString().split(',')
+            
             for(var iP = 0; iP < proveedor.length ; iP++){
                 if(proveedor[iP].descripcion.toLowerCase()=== valores[8].toString().toLowerCase()){
                     valores[8] = proveedor[iP].id_proveedor
@@ -49,6 +51,7 @@ api.post('/agregarProductos', async(req,res)=>{
                 }
             }
             for(var iMa = 0; iMa < marca.length ; iMa++){
+                
                 if(marca[iMa].descripcion.toLowerCase()=== valores[2].toString().toLowerCase()){
                     valores[2]=marca[iMa].idMarca
                 }
@@ -61,24 +64,25 @@ api.post('/agregarProductos', async(req,res)=>{
                     valores[5]=anio[iA].id_anio
                 }
             }
-            let sql_ingreso = `insert into producto(stock,tipo_repuesto,id_marca,id_posicion,id_provedor,id_modelo,anio_desde,anio_hasta,precio_unitario,precio_par,tipo,sku)
-                values(?,?,?,?,?,?,?,?,?,?,?,?)`;
-    
+            count ++
+            console.log(count)
+            let sql_ingreso = `insert into producto(stock,tipo_repuesto,id_marca,id_posicion,id_provedor,id_modelo,anio_desde,anio_hasta,precio_unitario,tipo,sku)
+                values(?,?,?,?,?,?,?,?,?,?,?)`;
+               
             const producto = await pool.query(sql_ingreso,
                 [1,
                 1,
                 valores[2],//marca.idMarca,
-                valores[6],//posicion.id,
+                parseInt(valores[6]),//posicion.id,
                 valores[8],//proveedor.id,
                 valores[3],//modelo.id_modelo,
-                parseInt(valores[4]),//anio_desde.id,
-                parseInt(valores[5]),//anio_hasta.id,
-                valores[11],//precio_unidad,
-                valores[12],//precio_unidad * 2,
+                valores[4],//anio_desde.id,
+                valores[5],//anio_hasta.id,
+                parseFloat(valores[11]),//precio_unidad,
                 valores[7],//tipo,
                 valores[0]//sku
             ])
-            console.log(valores)
+            
         }
         
         

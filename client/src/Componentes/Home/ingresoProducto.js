@@ -34,10 +34,7 @@ class IngresoProducto extends Component{
         toast.success('producto Ingresado') 
     }
     componentDidMount(){
-        this.props.traerMarca();
-        this.props.traerPosicion();
-        this.props.traerAnio();
-        this.props.traerProveedor();
+     
     }
     render(){
         return(

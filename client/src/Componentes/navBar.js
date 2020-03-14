@@ -19,22 +19,27 @@ class navBar extends Component{
     render(){
        
         return(
-        
-            <nav className="navbar navbar-expand-lg navbar-light bg-light col-12">
-                <Dropdown className="col-md-2 offset-md-10">
-                    <Dropdown.Toggle variant="warning" id="dropdown-basic">
+            
+            <div className="top_nav col-12">
+                <div className="nav_menu">
+                    
+                    <nav className="nav navbar-nav">
+                    <ul className=" navbar-right">
+                    <li className="nav-item dropdown open" style={{"padding-left": "15px"}}>
+                        <a href="javascript:;" className="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                         {this.props.usuario.nombre} {this.props.usuario.apellido} 
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <Dropdown.Item><Link to="/ventas">Mis ventas</Link></Dropdown.Item>
-                        <Dropdown.Item onClick={this.logOut.bind(this)}>Cerrar Sesión</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                
-                
-                
-            </nav>
+                        </a>
+                        <div className="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                        <a className="dropdown-item"  onClick={this.logOut.bind(this)}><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                        </div>
+                    </li>
+    
+                  
+                </ul>
+              </nav>
+            </div>
+          </div>
+           
         )
     }
 }

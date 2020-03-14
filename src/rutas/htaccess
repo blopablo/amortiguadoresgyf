@@ -1,0 +1,35 @@
+RewriteCond %{HTTP_REFERER} !^http://amortiguadoresgyf.cl/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://amortiguadoresgyf.cl$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.amortiguadoresgyf.cl/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.amortiguadoresgyf.cl$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://amortiguadoresgyf.cl/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://amortiguadoresgyf.cl$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.amortiguadoresgyf.cl/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.amortiguadoresgyf.cl$      [NC]
+RewriteRule .*\.(jpg|jpeg|gif|png|bmp)$ - [F,NC]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^amortiguadoresgyf\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.amortiguadoresgyf\.cl$
+RewriteRule ^/?$ "https\:\/\/amortiguadoresgyf\.cl\/" [R=301,L]
+
+
+#cPanel_HTTPS_INICIO
+RewriteEngine On
+RewriteCond %{HTTPS} !on
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#cPanel_HTTPS_FIN
+RewriteCond %{HTTP_HOST} ^amortiguadoresgyf.cl[NC]
+RewriteRule ^(.*)$ https://www.amortiguadoresgyf.cl/$1 [L,R=301,NC]
+RewriteOptions inherit
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^amortiguadoresgyf\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.amortiguadoresgyf\.cl$
+RewriteRule ^/?$ "https\:\/\/www\.amortiguadoresgyf\.cl\/" [R=301,L]

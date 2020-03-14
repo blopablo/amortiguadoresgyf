@@ -12,6 +12,7 @@ class Productos extends Component{
         this.state = {proveedor:'',
                     marca: '',
                     modelo: '',
+                    anio:'',
                     show:false,
                 datos:{}}
         this.handleChange = this.handleChange.bind(this);
@@ -20,8 +21,8 @@ class Productos extends Component{
         this.props.traerProveedor();
     }
     showModal = (e,datos) => {
-        this.setState({ datos:datos,show: true });     
-               
+        this.setState({ datos:datos,show: true,anio:this.props.amortiguadoresReducers.anio });     
+               console.log(datos)
     };
     
     hideModal = () => {
@@ -139,7 +140,7 @@ class Productos extends Component{
                         return(
                             
                         <tr key={key}>
-                        <th ><img src={require('../../img/'+datos.img_provedor)} alt="Foto_proveedor"/></th>
+                        <th ><img src={require('../../img/'+datos.img_provedor)} alt="Foto_proveedor" style={{width: "10rem"}}/></th>
                         <td>{datos.marca}</td>
                         <td>{datos.modelo}</td>
                         <td>{Math.round(datos.precio_unitario)}</td>

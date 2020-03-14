@@ -55,8 +55,10 @@ users.post('/registrar',async(req,res)=>{
 })
 
 users.post('/login', async (req,res)=>{
+    console.log('1')
     let sql =`select email,username,clave,rol,nombre,apellido,cargo from usuario where email='${req.body.inputLogin}' or username = '${req.body.inputLogin}'`
     const consultaUser = await pool.query(sql)
+    console.log('2')
     try{
         if(consultaUser.length > 0){
             let usuario = {usuario:consultaUser[0]};
@@ -68,9 +70,11 @@ users.post('/login', async (req,res)=>{
                     res.send(token)
                 }
             }else{
+                console.log('contraseña incorrecta')
                 res.send('ingrese la contraseña')
             }
         }else{
+            console.log('usuario no existe')
             res.status(400).json({error: 'usuario no existe'})
         }
 
